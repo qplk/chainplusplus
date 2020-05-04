@@ -18,12 +18,13 @@ public class MainController {
     @Autowired
     private ProcessingService processingService;
 
+    @CrossOrigin
     @PostMapping(value = "/baseInformation")
     public Map<String, List<String>> baseInformation(@RequestBody BaseInformationDTO baseInformationDTO) {
-        log.info("asdasdasd");
         return processingService.generateProfile(baseInformationDTO);
     }
 
+    @CrossOrigin
     @PostMapping(value = "/details/{disease}")
     public Set<ActivityDTO> necessaryActivities(@PathVariable String disease,
                                                 @RequestBody Map<String, String> answerMap) {
