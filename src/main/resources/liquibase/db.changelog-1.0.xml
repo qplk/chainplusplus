@@ -1,0 +1,162 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1.0.0" author="Nail">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="VARCHAR"/>
+            <column name="schedule" type="jsonb"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.1" author="Nail">
+        <createTable tableName="activities">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="activity" type="VARCHAR">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="frequency" type="int"/>
+            <column name="dimension" type="VARCHAR"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.2" author="Nail">
+        <createTable tableName="user_activities">
+            <column name="user_id" type="BIGINT"/>
+            <column name="activity_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.3" author="Nail">
+        <addForeignKeyConstraint baseTableName="user_activities"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_user_activities_user"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="user_activities"
+                                 baseColumnNames="activity_id"
+                                 constraintName="fk_user_activities_activity"
+                                 referencedTableName="activities"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="1.0.4" author="Nail">
+        <createTable tableName="diseases">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR">
+                <constraints unique="true" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.5" author="Nail">
+        <createTable tableName="symptoms">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR">
+                <constraints unique="true" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.6" author="Nail">
+        <createTable tableName="disease_symptoms">
+            <column name="disease_id" type="BIGINT"/>
+            <column name="symptom_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.7" author="Nail">
+        <addForeignKeyConstraint baseTableName="disease_symptoms"
+                                 baseColumnNames="disease_id"
+                                 constraintName="fk_disease_symptoms_disease"
+                                 referencedTableName="diseases"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="disease_symptoms"
+                                 baseColumnNames="symptom_id"
+                                 constraintName="fk_disease_symptoms_symptom"
+                                 referencedTableName="symptoms"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="1.0.8" author="Nail">
+        <createTable tableName="answers">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="answer" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="weight" type="int"/>
+            <column name="symptom" type="VARCHAR"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.9" author="Nail">
+        <addForeignKeyConstraint baseTableName="answers"
+                                 baseColumnNames="symptom"
+                                 constraintName="fk_answers_symptom"
+                                 referencedTableName="symptoms"
+                                 referencedColumnNames="name"/>
+    </changeSet>
+
+    <changeSet id="1.0.10" author="Nail">
+        <createTable tableName="answer_activities">
+            <column name="answer_id" type="BIGINT"/>
+            <column name="activity_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.11" author="Nail">
+        <addForeignKeyConstraint baseTableName="answer_activities"
+                                 baseColumnNames="answer_id"
+                                 constraintName="fk_answer_activities_answer"
+                                 referencedTableName="answers"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="answer_activities"
+                                 baseColumnNames="activity_id"
+                                 constraintName="fk_answer_activities_activity"
+                                 referencedTableName="activities"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="1.0.12" author="Nail">
+        <createTable tableName="symptom_activities">
+            <column name="symptom_id" type="BIGINT"/>
+            <column name="activity_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.13" author="Nail">
+        <addForeignKeyConstraint baseTableName="symptom_activities"
+                                 baseColumnNames="symptom_id"
+                                 constraintName="fk_symptom_activities_symptom"
+                                 referencedTableName="symptoms"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="symptom_activities"
+                                 baseColumnNames="activity_id"
+                                 constraintName="fk_symptom_activities_activity"
+                                 referencedTableName="activities"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>
